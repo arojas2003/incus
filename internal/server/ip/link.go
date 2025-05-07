@@ -186,6 +186,26 @@ func (l *Link) SetAddress(address net.HardwareAddr) error {
 	return nil
 }
 
+// SetNodeGUID sets the node_guid of the link device's VF.
+func (l *Link) SetNodeGUID(guid net.HardwareAddr, vfID int) error {
+	_, err := subprocess.RunCommand("ip", "link", "set", "dev", l.Name, "vf", fmt.Sprintf("%d", vfID), "node_guid", guid.String())
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// SetPortGUID sets the port_guid of the link device's VF.
+func (l *Link) SetPortGUID(guid net.HardwareAddr, vfID int) error {
+	_, err := subprocess.RunCommand("ip", "link", "set", "dev", l.Name, "vf", fmt.Sprintf("%d", vfID), "port_guid", guid.String())
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // SetAllMulticast when enabled instructs network driver to retrieve all multicast packets from the network to the
 // kernel for further processing.
 func (l *Link) SetAllMulticast(enabled bool) error {
